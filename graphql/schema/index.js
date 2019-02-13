@@ -2,30 +2,49 @@
 const { buildSchema } = require("graphql")
 
 module.exports = buildSchema(`
+  type RedeemedCoupon {
+    _id: ID!
+    type: Coupon!
+    user: User!
+    createdAt: String!
+  }
+
   type Coupon {
     _id: ID!
-    stores: [Store!]
-    user: User!
+    type: String!
+    description: String
+    percentOff: Int
+    free: String
+    startDay: String!
+    expiredDay: String!
+    amount: Int
+    stores: [Store!]!
     createdAt: String!
     updatedAt: String!
   }
 
   type Store {
     _id: ID!
-    username: String!
     storename: String!
     address: String!
-    createDate: String!
     creator: User!
+    collabs: [Store!]
+    coupons: [Coupon!]
+    createdAt: String!
+    updatedAt: String!
   }
 
   type User {
     _id: ID!
     email: String!
     password: String
+    name: String
     address: String
-    dob: String
-    stores: [Store!]
+    points: Int
+    redeemed: [RedeemedCoupons!]
+    createdStores: [Store!]!
+    createdAt: String!
+    updatedAt: String!
   }
 
   type AuthData {
@@ -35,15 +54,15 @@ module.exports = buildSchema(`
   }
 
   input StoreInput {
-    storename: String!
+    storename: String
     address: String!
   }
 
   input UserInput {
     email: String!
     password: String!
+    name: String
     address: String
-    dob: String
   }
 
   type RootQuery {

@@ -1,6 +1,5 @@
 const Store = require("../../models/store")
 const { transformStore } = require("./merge")
-const User = require("../../models/user")
 
 const { dateToString } = require("../../helpers/date")
 

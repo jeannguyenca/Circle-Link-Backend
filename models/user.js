@@ -11,15 +11,21 @@ const DataSchemaUser = new Schema({
     type: String,
     required: true
   },
+  name: String,
   address:  String,
-  dob: Date,
   points: Number,
-  stores: [
+  redeemed: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "RedeemedCoupon"
+    }
+  ],
+  createdStores: [
     {
       type: Schema.Types.ObjectId,
       ref: "Store"
     }
-]
-})
+  ]
+}, { timestamps: true })
 
 module.exports = mongoose.model("User", DataSchemaUser)

@@ -11,16 +11,22 @@ const DataSchemaStore = new Schema({
     type: String,
     required: true
   },
-  createDate: {
-    type: Date,
-    required: true
-  },
   creator: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  },
+  collabs: [
+    {
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: "Store"
     }
-
-
-})
+  ],
+  coupons: [
+    {
+    type: Schema.Types.ObjectId,
+    ref: "Coupon"
+    }
+  ]
+}, { timestamps: true })
 
 module.exports = mongoose.model("Store", DataSchemaStore)
