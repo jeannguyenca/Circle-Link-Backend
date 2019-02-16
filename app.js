@@ -6,9 +6,22 @@ const mongoose = require("mongoose")
 const graphQLSchema = require("./graphql/schema/index")
 const graphQLResolevers = require("./graphql/resolvers/index")
 
+
 const isAuth = require("./middleware/is-auth")
 
 const app = express()
+
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+})
+
 
 //run middleware on every coming request
 app.use(bodyParser.json())

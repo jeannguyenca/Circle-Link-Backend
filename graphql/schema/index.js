@@ -37,11 +37,12 @@ module.exports = buildSchema(`
   type User {
     _id: ID!
     email: String!
-    password: String
+    password: String!
+    role: String!
     name: String
     address: String
     points: Int
-    redeemed: [RedeemedCoupons!]
+    redeemed: [RedeemedCoupon!]
     createdStores: [Store!]!
     createdAt: String!
     updatedAt: String!
@@ -54,7 +55,7 @@ module.exports = buildSchema(`
   }
 
   input StoreInput {
-    storename: String
+    storename: String!
     address: String!
   }
 

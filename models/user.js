@@ -11,6 +11,11 @@ const DataSchemaUser = new Schema({
     type: String,
     required: true
   },
+  role: {
+    type: String, 
+    enum: ["admin", "store", "user"],
+    default: "user"
+  },
   name: String,
   address:  String,
   points: Number,
