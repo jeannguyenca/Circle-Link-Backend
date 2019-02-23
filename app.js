@@ -1,3 +1,11 @@
+/*TODO:
+  - Collab stores function/collab status/manage collab
+  - Coupon used bases on store
+  - Coupon count base on date? (optional)
+  - Find near by stores?
+  - Login with Gmail/Facebook
+*/ 
+
 const express = require("express")
 const bodyParser = require("body-parser")
 const graphqlHttp = require("express-graphql")
@@ -36,6 +44,9 @@ app.use(
     graphiql: true
   })
 )
+
+// For find and update in resolver -- coupons
+mongoose.set('useFindAndModify', false)
 
 //mongoDB database connection 
 mongoose

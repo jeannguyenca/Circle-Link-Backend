@@ -3,31 +3,48 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 const DataSchemaCoupon = new Schema ({
+  name: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+  },
   type: {
     type: String,
-    required: true
+    enum: ["percentOff", "free"],
+    default: "percentOff"
   },
-  decription: {
+  details: {
     type: String,
+    required: true,
+  },
+  condition: {
+    type: Number,
     required: true
   },
-  percentOff: Number,
-  free: String,
+  status: {
+    type: String,
+    enum: ["pending", "approved", "canceled"],
+    default: "pending"
+  },
   startDay: {
     type: Date,
     required: true
   },
   expiredDay: {
     type: Date,
-    required: true
   },
   amount: Number,
-  stores: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Store"
-    }
-  ]
+  store: {
+    type: Schema.Types.ObjectId,
+    ref: "Store"
+  },
+  collab: {
+    type: Schema.Types.ObjectId,
+    ref: "CollabStore"
+  }
+  
 }, { timestamps: true })
 
 module.exports = mongoose.model("Coupon", DataSchemaCoupon)

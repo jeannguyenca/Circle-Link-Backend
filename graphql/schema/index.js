@@ -2,6 +2,14 @@
 const { buildSchema } = require("graphql")
 
 module.exports = buildSchema(`
+  type CollabStore {
+    _id: ID!
+    store: Store!
+    collab: Store!
+    coupons: [Coupon!]
+    createdAt: String!
+  }
+
   type RedeemedCoupon {
     _id: ID!
     type: Coupon!
@@ -11,14 +19,17 @@ module.exports = buildSchema(`
 
   type Coupon {
     _id: ID!
-    type: String!
+    name: String!
     description: String
-    percentOff: Int
-    free: String
+    type: String
+    details: String!
+    condition: Int!
+    status: String
     startDay: String!
-    expiredDay: String!
+    expiredDay: String
     amount: Int
-    stores: [Store!]!
+    store: Store!
+    collab: CollabStore
     createdAt: String!
     updatedAt: String!
   }
@@ -28,7 +39,7 @@ module.exports = buildSchema(`
     storename: String!
     address: String!
     creator: User!
-    collabs: [Store!]
+    collabs: [CollabStore!]
     coupons: [Coupon!]
     createdAt: String!
     updatedAt: String!
@@ -50,8 +61,21 @@ module.exports = buildSchema(`
 
   type AuthData {
     userId: ID!
+    role: String!
     token: String!
     tokenExpiration: Int!
+  }
+
+  input CouponInput {
+    name: String!
+    description: String
+    type: String
+    details: String!
+    condition: Int!
+    status: String
+    startDay: String!
+    expiredDay: String
+    amount: Int
   }
 
   input StoreInput {
@@ -68,15 +92,16 @@ module.exports = buildSchema(`
 
   type RootQuery {
     stores: [Store!]!
-    coupons: [Coupon!]!
+    coupons(storeId: ID!, option: String): [Coupon!]!
     login(email: String!, password: String!): AuthData!
   }
 
   type RootMutation {
     createStore(storeInput: StoreInput): Store
     createUser(userInput: UserInput): User
-    createCoupon(storeIds: [ID!]!): Coupon!
-    cancelCoupon(couponId: ID!): [Store!]!
+    createCoupon(couponInput: CouponInput, storeId: ID!, collabId: ID): Coupon!
+    cancelCoupon(couponId: ID!): Coupon!
+    deleteCoupon(couponId: ID!): Store!
   }
 
   schema {

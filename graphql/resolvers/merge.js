@@ -15,8 +15,19 @@ const transformCoupon = coupon => {
     ...coupon._doc,
     createdAt: dateToString(coupon._doc.createdAt),
     updatedAt: dateToString(coupon._doc.updatedAt),
-    stores: stores.bind(this, coupon._doc.stores),
-    user: user.bind(this, coupon._doc.user)
+    store: singleStore.bind(this, coupon._doc.store),
+    collab: user.bind(this, coupon._doc.collab)
+  }
+}
+
+const couponsById = async couponIDs => {
+  try {
+    const coupons = await Coupon.find({ _id: { $in: couponIDs } })
+    return coupons.map(coupon => {
+      return transformCoupon(coupon)
+    })
+  } catch (err) {
+    throw err
   }
 }
 
@@ -36,7 +47,7 @@ const singleStore = async storeId => {
     const store = await Store.findById(storeId)
     return {
       ...store._doc,
-      user: user.bind(this, store.creator)
+      user: user.bind(this, store.creator),
     }
   } catch (err) {
     throw err
@@ -56,6 +67,7 @@ const user = async userId => {
 }
 
 exports.stores = stores
+exports.couponsById = couponsById
 exports.singleStore = singleStore
 exports.user = user
 exports.transformStore = transformStore

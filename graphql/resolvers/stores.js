@@ -1,16 +1,28 @@
 const Store = require("../../models/store")
+const User = require("../../models/user")
+
 const { transformStore } = require("./merge")
+
+const { stores } = require("./merge")
 
 const { dateToString } = require("../../helpers/date")
 
 
 module.exports = {
-  stores: async () => {
+  stores: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!")
+    }
+
+    if(req.role !== "store") {
+      throw new Error("You are not a store owner!")
+    }
+
     try {
-      const stores = await Store.find()
-      return stores.map(store => {
-        return transformStore(store)
-      })
+      const user = await User.findById(req.userId)
+      const storeId = user.createdStores
+      return getStores = stores(storeId)
+
     } catch (err) {
       throw err
     }
@@ -21,11 +33,14 @@ module.exports = {
       throw new Error("Unauthenticated!")
     }
 
+    if (req.role !== "store") {
+      throw new Error("You are not a store owner!")
+    }
+
     //must have storeInput since we nested our input to an object
     const store = new Store({
       storename: args.storeInput.storename,
       address: args.storeInput.address,
-      createDate: dateToString(),
       creator: req.userId
     })
     let createdStore
@@ -38,7 +53,8 @@ module.exports = {
       if (!creator) {
         throw new Error("User not found")
       }
-      creator.stores.push(store)
+      creator.createdStores.push(store)
+
       await creator.save()
       return createdStore
     } catch (err) {

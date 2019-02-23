@@ -18,7 +18,7 @@ const DataSchemaStore = new Schema({
   collabs: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Store"
+      ref: "CollabStores"
     }
   ],
   coupons: [

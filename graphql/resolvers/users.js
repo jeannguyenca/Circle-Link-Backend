@@ -17,7 +17,6 @@ module.exports = {
         email: args.userInput.email,
         password: hashedPassword,
         address: args.userInput.address,
-        dob: dateToString()
       })
       const result = await user.save()
       return { ...result._doc }
@@ -34,9 +33,19 @@ module.exports = {
     if(!isEqual) {
       throw new Error("Invalid credential")
     }
-    const token = await jwt.sign({ userId: user._id, email: user.email }, "somethingneedtobesecurehere", {
+    const token = await jwt.sign({ 
+      userId: user._id, 
+      role: user.role, 
+      email: user.email 
+    }, 
+    "somethingneedtobesecurehere", {
       expiresIn: "1h"
     });
-    return { userId: user._id, token: token, tokenExpiration: 1 }
+    return { 
+      userId: user._id, 
+      role: user.role, 
+      token: token, 
+      tokenExpiration: 1 
+    }
   }
 }
