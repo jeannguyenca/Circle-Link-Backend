@@ -91,14 +91,14 @@ module.exports = buildSchema(`
   }
 
   type RootQuery {
-    stores: [Store!]!
-    coupons(storeId: ID!, option: String): [Coupon!]!
+    stores(option: String): [Store!]!
+    coupons(storeId: ID, couponId: ID, option: String): [Coupon!]!
     login(email: String!, password: String!): AuthData!
   }
 
   type RootMutation {
     createStore(storeInput: StoreInput): Store
-    createUser(userInput: UserInput): User
+    createUser(userInput: UserInput, role: String): User
     createCoupon(couponInput: CouponInput, storeId: ID!, collabId: ID): Coupon!
     cancelCoupon(couponId: ID!): Coupon!
     deleteCoupon(couponId: ID!): Store!

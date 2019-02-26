@@ -5,7 +5,6 @@ const { dateToString } = require("../../helpers/date")
 const transformStore = store => {
   return {
     ...store._doc,
-    createDate: dateToString(store._doc.createDate),
     creator: user.bind(this, store.creator)
   }
 }

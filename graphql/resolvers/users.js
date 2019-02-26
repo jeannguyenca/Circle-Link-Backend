@@ -17,6 +17,7 @@ module.exports = {
         email: args.userInput.email,
         password: hashedPassword,
         address: args.userInput.address,
+        role: args.role
       })
       const result = await user.save()
       return { ...result._doc }

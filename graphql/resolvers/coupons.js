@@ -8,8 +8,21 @@ const { dateToString } = require("../../helpers/date")
 
 module.exports = {
   coupons: async (args, req) => {
+    // if (args.couponId) {
+    //   try {
+    //     const coupon = await Coupon.findById(args.couponId)
+    //     if(!coupon) {
+    //       throw new Error("Cannot find coupon")
+    //     }
+    //     return transformCoupon(coupon)
+    //   } catch (err) {
+    //     throw err
+    //   }
+    // }
+
     // find all coupons
     if (!args.storeId) {
+
       try {
         const coupons = await Coupon.find()
         return coupons.map(coupon => {

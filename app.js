@@ -1,9 +1,9 @@
 /*TODO:
   - Collab stores function/collab status/manage collab
-  - Coupon used bases on store
-  - Coupon count base on date? (optional)
-  - Find near by stores?
-  - Login with Gmail/Facebook
+  - Coupon used bases on store - fake
+  - Coupon count base on date? - fake
+  - Find near by stores - fake
+  - Login with Gmail/Facebook - maybe with Gmail
 */ 
 
 const express = require("express")

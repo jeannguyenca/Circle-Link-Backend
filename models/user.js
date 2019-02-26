@@ -18,7 +18,10 @@ const DataSchemaUser = new Schema({
   },
   name: String,
   address:  String,
-  points: Number,
+  points: {
+    type: Number,
+    default: 0
+  },
   redeemed: [
     {
       type: Schema.Types.ObjectId,

@@ -10,22 +10,29 @@ const { dateToString } = require("../../helpers/date")
 
 module.exports = {
   stores: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error("Unauthenticated!")
-    }
+    // if (!req.isAuth) {
+    //   throw new Error("Unauthenticated!")
+    // }
 
-    if(req.role !== "store") {
-      throw new Error("You are not a store owner!")
-    }
+    if(req.role === "store") {
+      if (args.option === "mystore") {
+        try {
+          const user = await User.findById(req.userId)
+          const storeId = user.createdStores
+          return getStores = stores(storeId)
 
-    try {
-      const user = await User.findById(req.userId)
-      const storeId = user.createdStores
-      return getStores = stores(storeId)
+        } catch (err) {
+          throw err
+        }
+      }
 
-    } catch (err) {
-      throw err
     }
+    
+      const storeIds = await Store.find()
+      return stores(storeIds)
+
+
+
   },
   createStore: async (args, req) => {
     //check request authorization 
