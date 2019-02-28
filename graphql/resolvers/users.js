@@ -39,7 +39,7 @@ module.exports = {
       role: user.role, 
       email: user.email 
     }, 
-    "somethingneedtobesecurehere", {
+      process.env.SECRET, {
       expiresIn: "1h"
     });
     return { 

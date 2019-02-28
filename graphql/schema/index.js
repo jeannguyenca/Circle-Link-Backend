@@ -53,6 +53,7 @@ module.exports = buildSchema(`
     name: String
     address: String
     points: Int
+    avatarURL: String
     redeemed: [RedeemedCoupon!]
     createdStores: [Store!]!
     createdAt: String!
@@ -88,11 +89,12 @@ module.exports = buildSchema(`
     password: String!
     name: String
     address: String
+    avatarURL: String
   }
 
   type RootQuery {
     stores(option: String): [Store!]!
-    coupons(storeId: ID, couponId: ID, option: String): [Coupon!]!
+    coupons(couponId: ID, storeId: ID, option: String): [Coupon!]!
     login(email: String!, password: String!): AuthData!
   }
 

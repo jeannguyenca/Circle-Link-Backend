@@ -22,6 +22,7 @@ const DataSchemaUser = new Schema({
     type: Number,
     default: 0
   },
+  avatarURL: String,
   redeemed: [
     {
       type: Schema.Types.ObjectId,

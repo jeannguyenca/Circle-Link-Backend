@@ -4,43 +4,43 @@ const CollabStore = require("../../models/collabStores")
 
 const { transformCoupon, transformStore, couponsById } = require("./merge")
 
-const { dateToString } = require("../../helpers/date")
+// const { dateToString } = require("../../helpers/date")
 
 module.exports = {
   coupons: async (args, req) => {
-    // if (args.couponId) {
-    //   try {
-    //     const coupon = await Coupon.findById(args.couponId)
-    //     if(!coupon) {
-    //       throw new Error("Cannot find coupon")
-    //     }
-    //     return transformCoupon(coupon)
-    //   } catch (err) {
-    //     throw err
-    //   }
-    // }
-
-    // find all coupons
-    if (!args.storeId) {
-
+    if (args.couponId) {
       try {
-        const coupons = await Coupon.find()
+        const coupon = await Coupon.findById(args.couponId)
+        if(!coupon) {
+          throw new Error("Cannot find coupon")
+        }
+        const result = []
+        result.push(transformCoupon(coupon))
+        return result
+      } catch (err) {
+        throw err
+      }
+    }
+
+    // find all approved coupons for user 
+    if (!args.storeId) {
+      try {
+        const coupons = await Coupon.find({status: "approved"})
         return coupons.map(coupon => {
-          return transformCoupon(coupon)
+          const result = transformCoupon(coupon)
+          return result
         })
       } catch (err) {
         throw err
       }
     }
     // find coupons with storeID
-    if (!args.option) {
+    if (!args.option && args.storeId) {
       try {
         const store = await Store.findById(args.storeId)
 
         if (!store) {
           throw new Error("Cannot find store")
-        } else {
-          console.log(store)
         }
 
         const coupons = await Coupon.find({ _id: { $in: store.coupons } })
@@ -151,7 +151,13 @@ module.exports = {
     }
   },
   cancelCoupon: async args => {
-    //TODO: Authentication
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!")
+    }
+    if (req.role !== "store") {
+      throw new Error("You are not a store owner!")
+    }
+
     try {
       const coupon = await Coupon.findById(args.couponId).populate("store")
 
@@ -177,7 +183,12 @@ module.exports = {
     }
   },
   deleteCoupon: async args => {
-    //TODO: Authentication
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!")
+    }
+    if (req.role !== "store") {
+      throw new Error("You are not a store owner!")
+    }
     try {
       const coupon = await Coupon.findById(args.couponId).populate("store")
 
