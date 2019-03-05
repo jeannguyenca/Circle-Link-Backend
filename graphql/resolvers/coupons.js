@@ -2,7 +2,7 @@ const Coupon = require("../../models/coupon")
 const Store = require("../../models/store")
 const CollabStore = require("../../models/collabStores")
 
-const { transformCoupon, transformStore, couponsById } = require("./merge")
+const { transformCoupon, transformStore } = require("./merge")
 
 // const { dateToString } = require("../../helpers/date")
 
@@ -53,8 +53,9 @@ module.exports = {
         throw err
       }
     } else if (args.option === "collab") {
+      //TODO: Authentication
       try {
-        const collabs = await CollabStore.find({ store: args.storeId})
+        const collabs = await CollabStore.find({ $or: [{ store: args.storeId }, { collab: args.storeId}] })
 
         if(collabs == null) {
           throw new Error("Cannot find any collab")
@@ -76,7 +77,7 @@ module.exports = {
 
         for (var i = 0;i < coupons.length; i++) {
           for(var j = 0; j < coupons[i].length; j++) {
-            result.push(coupons[i][j])
+            result.push(transformCoupon(coupons[i][j]))
           }
         }
         return result
@@ -206,6 +207,55 @@ module.exports = {
       await storeObj.save()
 
       return store
+    } catch (err) {
+      throw err
+    }
+  },
+  editCoupon: async (args, req) => {
+    // if (!req.isAuth) {
+    //   throw new Error("Unauthenticated!")
+    // }
+    // if (req.role !== "store") {
+    //   throw new Error("You are not a store owner!")
+    // }
+
+    try {
+
+      const {
+        name,
+        description,
+        type,
+        details,
+        status,
+        condition,
+        expiredDay,
+        amount
+      } = args.couponEditInput
+
+      const isCoupon = await Coupon.findById(args.couponId)
+
+      if(!isCoupon) {
+        throw new Error("Cannot find coupon")
+      }
+
+      const coupon = await Coupon.findByIdAndUpdate({_id:args.couponId}, 
+        {
+          $set: 
+            {
+              name: name != null ? name : isCoupon.name,
+              description: description != null ? description: isCoupon.description,
+              type: type != null ? type : isCoupon.type,
+              details: details != null ? details : isCoupon.details,
+              status: status != null ? status : isCoupon.status,
+              condition: condition != null ? condition : isCoupon.condition,
+              expiredDay: expiredDay != null ? expiredDay : isCoupon.expiredDay,
+              amount: amount != null ? amount : isCoupon.amount,
+            }
+        })
+
+      await coupon.save()
+
+      return transformCoupon(coupon)
     } catch (err) {
       throw err
     }

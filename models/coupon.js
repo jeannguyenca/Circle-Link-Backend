@@ -42,7 +42,7 @@ const DataSchemaCoupon = new Schema ({
   },
   collab: {
     type: Schema.Types.ObjectId,
-    ref: "CollabStore"
+    ref: "Store"
   }
   
 }, { timestamps: true })

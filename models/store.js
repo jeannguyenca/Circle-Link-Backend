@@ -15,6 +15,10 @@ const DataSchemaStore = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User"
   },
+  storeCover: {
+    type: String,
+    default: ""
+  },
   collabs: [
     {
       type: Schema.Types.ObjectId,

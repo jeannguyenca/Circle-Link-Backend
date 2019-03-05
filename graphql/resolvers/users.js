@@ -20,7 +20,7 @@ module.exports = {
         role: args.role
       })
       const result = await user.save()
-      return { ...result._doc }
+      return "Success"
     } catch (err) {
       throw err
     }

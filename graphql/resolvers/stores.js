@@ -31,8 +31,6 @@ module.exports = {
       const storeIds = await Store.find()
       return stores(storeIds)
 
-
-
   },
   createStore: async (args, req) => {
     //check request authorization 

@@ -22,7 +22,10 @@ const DataSchemaUser = new Schema({
     type: Number,
     default: 0
   },
-  avatarURL: String,
+  avatarURL: {
+    type: String,
+    default: "https://firebasestorage.googleapis.com/v0/b/circlelink-eb07a.appspot.com/o/profile.png?alt=media&token=e260d7bc-4758-43d4-b5fb-9dc4867a3a0b"
+  },
   redeemed: [
     {
       type: Schema.Types.ObjectId,

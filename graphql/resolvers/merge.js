@@ -1,4 +1,5 @@
 const Store = require("../../models/store")
+const CollabStore = require("../../models/collabStores")
 const User = require("../../models/user")
 const { dateToString } = require("../../helpers/date")
 
@@ -15,7 +16,7 @@ const transformCoupon = coupon => {
     createdAt: dateToString(coupon._doc.createdAt),
     updatedAt: dateToString(coupon._doc.updatedAt),
     store: singleStore.bind(this, coupon._doc.store),
-    collab: user.bind(this, coupon._doc.collab)
+    collab: singleStore.bind(this, coupon._doc.collab),
   }
 }
 
@@ -53,6 +54,23 @@ const singleStore = async storeId => {
   }
 }
 
+const collabStores = async collabId => {
+  try {
+    const collab = await CollabStore.findById(collabId)
+    console.log(collabId)
+    if(!collab) {
+      throw new Error("Cannot find collab")
+    }
+    return {
+      ...collab._doc,
+      store: singleStore.bind(this, collab._doc.store),
+      collab: singleStore.bind(this, collab._doc.collab),
+    }
+  } catch (err) {
+    throw err
+  }
+}
+
 const user = async userId => {
   try {
     const user = await User.findById(userId)
@@ -66,6 +84,7 @@ const user = async userId => {
 }
 
 exports.stores = stores
+exports.collabStores = collabStores
 exports.couponsById = couponsById
 exports.singleStore = singleStore
 exports.user = user

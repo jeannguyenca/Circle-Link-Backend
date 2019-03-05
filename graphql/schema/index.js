@@ -29,7 +29,7 @@ module.exports = buildSchema(`
     expiredDay: String
     amount: Int
     store: Store!
-    collab: CollabStore
+    collab: Store!
     createdAt: String!
     updatedAt: String!
   }
@@ -79,6 +79,17 @@ module.exports = buildSchema(`
     amount: Int
   }
 
+  input CouponEditInput {
+    name: String
+    description: String
+    type: String
+    details: String
+    condition: Int
+    status: String
+    expiredDay: String
+    amount: Int
+  }
+
   input StoreInput {
     storename: String!
     address: String!
@@ -100,10 +111,11 @@ module.exports = buildSchema(`
 
   type RootMutation {
     createStore(storeInput: StoreInput): Store
-    createUser(userInput: UserInput, role: String): User
+    createUser(userInput: UserInput, role: String): String
     createCoupon(couponInput: CouponInput, storeId: ID!, collabId: ID): Coupon!
     cancelCoupon(couponId: ID!): Coupon!
     deleteCoupon(couponId: ID!): Store!
+    editCoupon(couponEditInput: CouponEditInput, couponId: ID!): Coupon!
   }
 
   schema {
