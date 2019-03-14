@@ -1,19 +1,19 @@
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken")
 
 //middleware that checking authorization for requests
-module.exports = (req, res, next ) => {
+module.exports = (req, res, next) => {
   //get Authorization header
   const authHeader = req.get("Authorization")
 
   //no header found
-  if(!authHeader) {
+  if (!authHeader) {
     req.isAuth = false
     return next()
   }
-  
+
   //no token found
   const token = authHeader.split(" ")[1] //Bearer asdfadsa
-  if(!token || token === "") {
+  if (!token || token === "") {
     req.isAuth = false
     return next()
   }
@@ -21,17 +21,17 @@ module.exports = (req, res, next ) => {
   //decode token
   let decodedToken
   try {
-    decodedToken = jwt.verify(token, "somethingneedtobesecurehere")
+    decodedToken = jwt.verify(token, process.env.SECRET)
   } catch (err) {
     req.isAuth = false
     return next()
   }
 
-  if(!decodedToken) {
+  if (!decodedToken) {
     req.isAuth = false
     return next()
   }
-  
+
   req.isAuth = true
   req.role = decodedToken.role
   req.userId = decodedToken.userId

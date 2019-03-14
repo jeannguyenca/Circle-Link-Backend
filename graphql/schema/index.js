@@ -86,6 +86,7 @@ module.exports = buildSchema(`
     details: String
     condition: Int
     status: String
+    startDay: String!
     expiredDay: String
     amount: Int
   }

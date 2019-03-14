@@ -1,6 +1,6 @@
 const Coupon = require("../../models/coupon")
 const Store = require("../../models/store")
-const CollabStore = require("../../models/collabStores")
+const CollabStores = require("../../models/collabStores")
 
 const { transformCoupon, transformStore } = require("./merge")
 
@@ -212,12 +212,12 @@ module.exports = {
     }
   },
   editCoupon: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error("Unauthenticated!")
-    // }
-    // if (req.role !== "store") {
-    //   throw new Error("You are not a store owner!")
-    // }
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!")
+    }
+    if (req.role !== "store") {
+      throw new Error("You are not a store owner!")
+    }
 
     try {
 
@@ -228,6 +228,7 @@ module.exports = {
         details,
         status,
         condition,
+        startDay,
         expiredDay,
         amount
       } = args.couponEditInput
@@ -248,6 +249,7 @@ module.exports = {
               details: details != null ? details : isCoupon.details,
               status: status != null ? status : isCoupon.status,
               condition: condition != null ? condition : isCoupon.condition,
+              startDay: startDay != null ? startDay : isCoupon.startDay,
               expiredDay: expiredDay != null ? expiredDay : isCoupon.expiredDay,
               amount: amount != null ? amount : isCoupon.amount,
             }
