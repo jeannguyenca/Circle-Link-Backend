@@ -21,7 +21,7 @@ const DataSchemaUser = new Schema(
     address: String,
     points: {
       type: Number,
-      default: 0
+      default: 100
     },
     avatarURL: {
       type: String,

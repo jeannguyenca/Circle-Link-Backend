@@ -39,6 +39,7 @@ module.exports = buildSchema(`
     storename: String!
     address: String!
     creator: User!
+    storeCover: String!
     collabs: [CollabStore!]
     coupons: [Coupon!]
     createdAt: String!
