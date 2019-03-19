@@ -4,6 +4,11 @@ const jwt = require('jsonwebtoken')
 const User = require("../../models/user")
 const { dateToString } = require("../../helpers/date")
 
+const createToken = (user, secret, expiresIn) => {
+  const {email } = user;
+  return jwt.sign({email }, secret, { expiresIn });
+};
+
 module.exports = {
   createUser: async args => {
     try {
@@ -48,6 +53,21 @@ module.exports = {
       token: token, 
       tokenExpiration: 1 
     }
+  },
+  signinUser: async ({ email, password}) => {
+    const user = await User.findOne({
+      email
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      throw new Error("Invalid password");
+    }
+    return {
+      token: createToken(user, process.env.SECRET, "1hr")
+    };
   }
 }
 
