@@ -113,15 +113,16 @@ module.exports = buildSchema(`
   type Token {
     token: String!
   }
-
+  
   type RootMutation {
     createStore(storeInput: StoreInput): Store
-    createUser(userInput: UserInput, role: String): Token
+    createUser(userInput: UserInput, role: String): User
     createCoupon(couponInput: CouponInput, storeId: ID!, collabId: ID): Coupon!
     cancelCoupon(couponId: ID!): Coupon!
     deleteCoupon(couponId: ID!): Store!
     editCoupon(couponEditInput: CouponEditInput, couponId: ID!): Coupon!
     signinUser(email: String!, password: String!): Token
+    deleteUser(userId: ID!): User
   }
 
   schema {

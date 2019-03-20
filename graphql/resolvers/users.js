@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs")
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 
 const User = require("../../models/user")
@@ -10,6 +10,7 @@ const createToken = (user, secret, expiresIn) => {
 };
 
 module.exports = {
+
   createUser: async args => {
     try {
       const existingUser = await User.findOne({ email: args.userInput.email })
@@ -21,11 +22,12 @@ module.exports = {
       const user = new User({
         email: args.userInput.email,
         password: hashedPassword,
+        name: args.userInput.name,
         address: args.userInput.address,
         role: args.role
       })
       const result = await user.save()
-      return "Success"
+      return result
     } catch (err) {
       throw err
     }
@@ -59,7 +61,7 @@ module.exports = {
       email
     });
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("User not found")
     }
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
@@ -68,6 +70,20 @@ module.exports = {
     return {
       token: createToken(user, process.env.SECRET, "1hr")
     };
+  },
+  deleteUser: async args => {
+    try {
+      const user = await User.findById(args.userId).populate("user")
+      if (!user) {
+        throw new Error("Cannot find coupon")
+      }
+      await User.deleteOne({ _id: args.userId })
+      return user
+
+    } catch (error) {
+      throw error
+    }
   }
+  
 }
 
