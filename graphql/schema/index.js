@@ -109,6 +109,7 @@ module.exports = buildSchema(`
     stores(option: String): [Store!]!
     coupons(couponId: ID, storeId: ID, option: String): [Coupon!]!
     login(email: String!, password: String!): AuthData!
+    user(userId: ID): User!
   }
 
   type RootMutation {

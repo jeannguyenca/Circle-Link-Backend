@@ -123,12 +123,15 @@ module.exports = {
               expiresIn: "1h"
             }
           )
-          return {
-            userId: user._id,
-            role: user.role,
-            token: token,
-            tokenExpiration: 1
-          }
+          return [
+            {
+              userId: user._id,
+              role: user.role,
+              token: token,
+              tokenExpiration: 1
+            },
+            user
+          ]
         }
       } else {
         if (existingUser.googleAccount.length === 0) {
@@ -145,15 +148,41 @@ module.exports = {
             expiresIn: "1h"
           }
         )
-        return {
-          userId: existingUser._id,
-          role: existingUser.role,
-          token: token,
-          tokenExpiration: 1
-        }
+        return [
+          {
+            userId: existingUser._id,
+            role: existingUser.role,
+            token: token,
+            tokenExpiration: 1
+          },
+          existingUser
+        ]
       }
     } catch (err) {
       throw err
+    }
+  },
+  user: async (args, req) => {
+    if (req.isAuth) {
+      try {
+        const user = await User.findById(req.userId)
+        if (!user) {
+          throw new Error("Cannot find any user.")
+        } 
+        return user
+      } catch (err) {
+        console.log(err)
+      }
+    } else if (args.userId) {
+      try {
+        const user = await User.findById(args.userId)
+        if (!user) {
+          throw new Error("Cannot find any user")
+        } 
+        return user
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
