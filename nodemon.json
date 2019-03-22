@@ -1,6 +1,7 @@
 {
   "env": {
     "URI": "mongodb://admin:admin1@ds113845.mlab.com:13845/circlelink",
-    "SECRET": "mybigsecret"
+    "SECRET": "mybigsecret",
+    "GOOGLE_SECRET": "2oNqkYhT9QH3cPYDSwI1BzqR"
   }
 }

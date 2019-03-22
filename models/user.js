@@ -10,7 +10,7 @@ const DataSchemaUser = new Schema(
     },
     password: {
       type: String,
-      required: true
+      required: false
     },
     role: {
       type: String,
@@ -39,7 +39,33 @@ const DataSchemaUser = new Schema(
         type: Schema.Types.ObjectId,
         ref: "Store"
       }
-    ]
+    ],
+    googleAccount: {
+      type: [
+        {
+          id: {
+            type: String,
+            required: true
+          },
+          access_token: {
+            type: String,
+            required: true
+          },
+          id_token: {
+            type: String,
+            required: true
+          },
+          expires_in: {
+            type: Number,
+            required: true
+          },
+          refresh_token: {
+            type: String,
+            required: true
+          }
+        }
+      ]
+    }
   },
   { timestamps: true }
 )
