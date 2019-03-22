@@ -173,16 +173,6 @@ module.exports = {
       } catch (err) {
         console.log(err)
       }
-    } else if (args.userId) {
-      try {
-        const user = await User.findById(args.userId)
-        if (!user) {
-          throw new Error("Cannot find any user")
-        } 
-        return user
-      } catch (err) {
-        console.log(err)
-      }
     }
   }
 }
