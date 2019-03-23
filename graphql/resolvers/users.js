@@ -93,6 +93,7 @@ module.exports = {
       // console.log(userInfo)
 
       const existingUser = await User.findOne({ email: userInfo.email })
+
       if (!existingUser) {
         const user = new User({
           email: userInfo.email,
@@ -123,18 +124,15 @@ module.exports = {
               expiresIn: "1h"
             }
           )
-          return [
-            {
+          return {
               userId: user._id,
               role: user.role,
               token: token,
               tokenExpiration: 1
-            },
-            user
-          ]
+            }
         }
       } else {
-        if (existingUser.googleAccount.length === 0) {
+        if (existingUser.googleAccount._id === null) {
           throw new Error("Email exists already.")
         }
         const token = await jwt.sign(
@@ -148,15 +146,13 @@ module.exports = {
             expiresIn: "1h"
           }
         )
-        return [
-          {
+        return {
             userId: existingUser._id,
             role: existingUser.role,
             token: token,
             tokenExpiration: 1
-          },
-          existingUser
-        ]
+          }
+        
       }
     } catch (err) {
       throw err
@@ -168,7 +164,7 @@ module.exports = {
         const user = await User.findById(req.userId)
         if (!user) {
           throw new Error("Cannot find any user.")
-        } 
+        }
         return user
       } catch (err) {
         console.log(err)
