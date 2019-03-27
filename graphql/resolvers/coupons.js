@@ -55,7 +55,7 @@ module.exports = {
     } else if (args.option === "collab") {
       //TODO: Authentication
       try {
-        const collabs = await CollabStore.find({ $or: [{ store: args.storeId }, { collab: args.storeId}] })
+        const collabs = await CollabStores.find({ $or: [{ store: args.storeId }, { collab: args.storeId}] })
 
         if(collabs == null) {
           throw new Error("Cannot find any collab")
