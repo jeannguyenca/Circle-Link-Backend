@@ -183,7 +183,7 @@ module.exports = {
       throw err
     }
   },
-  deleteCoupon: async args => {
+  deleteCoupon: async (args, req) => {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!")
     }
