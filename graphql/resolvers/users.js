@@ -79,6 +79,7 @@ module.exports = {
       )
 
       const accessToken = await fetchToken.json()
+      
       console.log(accessToken)
 
       const fetchUserInfo = await fetch(
