@@ -55,7 +55,7 @@ module.exports = {
       tokenExpiration: 1
     }
   },
-  googleUser: async ({ code }) => {
+  googleUser: async ({ code, url }) => {
     try {
       const formData = new FormData()
       formData.append("code", code)
@@ -65,7 +65,9 @@ module.exports = {
       )
       formData.append("client_secret", process.env.GOOGLE_SECRET)
       formData.append("grant_type", "authorization_code")
-      formData.append("redirect_uri", "http://localhost:3000/login")
+      formData.append("redirect_uri", url)
+
+      console.log(url)
 
       const fetchToken = await fetch(
         `https://www.googleapis.com/oauth2/v4/token`,
@@ -77,7 +79,7 @@ module.exports = {
       )
 
       const accessToken = await fetchToken.json()
-      // console.log(token)
+      console.log(accessToken)
 
       const fetchUserInfo = await fetch(
         `https://www.googleapis.com/userinfo/v2/me`,
@@ -125,11 +127,11 @@ module.exports = {
             }
           )
           return {
-              userId: user._id,
-              role: user.role,
-              token: token,
-              tokenExpiration: 1
-            }
+            userId: user._id,
+            role: user.role,
+            token: token,
+            tokenExpiration: 1
+          }
         }
       } else {
         if (existingUser.googleAccount._id === null) {
@@ -147,12 +149,11 @@ module.exports = {
           }
         )
         return {
-            userId: existingUser._id,
-            role: existingUser.role,
-            token: token,
-            tokenExpiration: 1
-          }
-        
+          userId: existingUser._id,
+          role: existingUser.role,
+          token: token,
+          tokenExpiration: 1
+        }
       }
     } catch (err) {
       throw err

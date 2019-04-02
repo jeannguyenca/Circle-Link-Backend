@@ -115,7 +115,7 @@ module.exports = buildSchema(`
   type RootMutation {
     createStore(storeInput: StoreInput): Store
     createUser(userInput: UserInput, role: String): User
-    googleUser(code: String): AuthData!
+    googleUser(code: String, url: String!): AuthData!
     createCoupon(couponInput: CouponInput, storeId: ID!, collabId: ID): Coupon!
     cancelCoupon(couponId: ID!): Coupon!
     deleteCoupon(couponId: ID!): Store!
